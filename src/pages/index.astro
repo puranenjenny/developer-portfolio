@@ -1,56 +1,227 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import NfcFlow from '../components/NfcFlow.astro';
+import Chips from '../components/Chips.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { withBase } from '../utils/url';
 
 const projects = await getCollection('projects');
+const pick = (ids: string[]) => ids.map((id) => projects.find((p) => p.id === id)!);
+
+const featured = pick(['chatlog-analyzer', 'git-github-student-guide']);
+const mobile = pick(['penny-paladin', 'scatterbrain', 'vegan-voyager-helsinki']);
+const games = pick(['metsaseikkailu', 'zigzag', 'ar-jewelry-tryon']);
+const more = pick(['r-autio-oy', 'luna-maria', 'botpress-chatbot']);
+const challenge = pick(['sixty-minute-challenge'])[0];
+const nfcSmall = pick(['nfc-linkedin-keychain', 'nfc-guest-wifi']);
+const nfc = pick(['nfc-cat-feeder'])[0];
 const learning = await getCollection('learning');
+
 const labels = {
   completed: 'Completed',
   'in-progress': 'In progress',
   experiment: 'Experiment',
+  community: 'Workshops & webinars, not certifications',
 } as const;
 ---
 
 <Base
-  title="Developer portfolio (placeholder)"
-  description="Placeholder homepage used to verify the build and preview pipeline."
+  title="Jenny Puranen | Software developer"
+  description="Jenny Puranen, a recently graduated ICT professional in Helsinki working with Python, web development, data, AI and automation."
 >
-  <p class="notice" role="note">
-    Placeholder content only. The real portfolio content is not written yet.
-  </p>
-  <h1>Developer portfolio</h1>
-
-  <section aria-labelledby="projects-heading">
-    <h2 id="projects-heading">Projects</h2>
-    <ul class="cards">
-      {
-        projects.map((p) => (
-          <li class="card">
-            <h3>{p.data.title}</h3>
-            <p class="status" data-status={p.data.status}>
-              {labels[p.data.status]}
-            </p>
-            <p>{p.data.summary}</p>
-          </li>
-        ))
-      }
+  <section class="intro" aria-labelledby="intro-heading">
+    <h1 id="intro-heading">Hi, I'm Jenny.</h1>
+    <p>
+      I'm a recently graduated ICT professional who likes building practical
+      things with people in mind. My path started in arts and special-needs
+      work, which is why accessibility and clear, friendly interfaces matter
+      to me. These days I work with Python, web development, data, AI and
+      automation, and I'm always experimenting with something new.
+    </p>
+    <ul class="contact-row plain" aria-label="Contact">
+      <li><a class="btn" href="mailto:puranenjenny@gmail.com">Email me</a></li>
+      <li><a class="btn ghost" href="https://www.linkedin.com/in/jenny-puranen/">LinkedIn</a></li>
+      <li><a class="btn ghost" href="https://github.com/puranenjenny">GitHub</a></li>
     </ul>
   </section>
 
-  <section aria-labelledby="learning-heading">
-    <h2 id="learning-heading">Learning &amp; experiments</h2>
-    <ul class="cards">
+  <div id="projects">
+  <section aria-labelledby="featured-heading">
+    <h2 id="featured-heading">Featured projects</h2>
+    <ul class="cards two">{featured.map((p) => <ProjectCard entry={p} />)}</ul>
+  </section>
+
+  <section aria-labelledby="mobile-heading">
+    <details class="category">
+      <summary>
+        <h2 id="mobile-heading">Mobile apps</h2>
+        <span class="n">{mobile.length}</span>
+        <span class="teaser">Kotlin, Flutter, Dart, SQLite</span>
+      </summary>
+      <ul class="cards three">{mobile.map((p) => <ProjectCard entry={p} />)}</ul>
+    </details>
+  </section>
+
+  <section aria-labelledby="games-heading">
+    <details class="category">
+      <summary>
+        <h2 id="games-heading">Games &amp; interactive</h2>
+        <span class="n">{games.length}</span>
+        <span class="teaser">Unity, C#, Blender, Lens Studio</span>
+      </summary>
+      <ul class="cards three">{games.map((p) => <ProjectCard entry={p} />)}</ul>
+    </details>
+  </section>
+
+  <section aria-labelledby="more-heading">
+    <details class="category">
+      <summary>
+        <h2 id="more-heading">Web &amp; chatbots</h2>
+        <span class="n">{more.length}</span>
+        <span class="teaser">PHP, MySQL, HTML, CSS, Botpress</span>
+      </summary>
+      <ul class="cards three">{more.map((p) => <ProjectCard entry={p} />)}</ul>
+    </details>
+  </section>
+
+  </div>
+
+  <section id="learning" aria-labelledby="learning-heading">
+    <h2 id="learning-heading">Learning</h2>
+    <div class="learning">
       {
         learning.map((l) => (
-          <li class="card">
-            <h3>{l.data.title}</h3>
-            <p class="status" data-status={l.data.status}>
-              {labels[l.data.status]}
-            </p>
-            <p>{l.data.summary}</p>
-          </li>
+          <div class="panel">
+            {l.data.gallery && (
+              <img
+                src={withBase(`projects/${l.data.gallery.files[0]}`)}
+                alt={l.data.gallery.altPrefix}
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+            <div>
+              <h3>{l.data.title}</h3>
+              <p class="status" data-status={l.data.status}>
+                {labels[l.data.status]}
+                {l.data.progress && `, ${l.data.progress}`}
+              </p>
+              <p>{l.data.summary}</p>
+              {l.data.courses.length > 0 && (
+                <details class="events" open>
+                  <summary>
+                    Courses <span class="n">{l.data.courses.length}</span>
+                  </summary>
+                  <ul>
+                    {l.data.courses.map((c) => (
+                      <li>
+                        {c.title} ({c.done ? 'done' : 'in progress'})
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+              {l.data.eventGroups.map((g) => (
+                <details class="events" open={g.open}>
+                  <summary>
+                    {g.title} <span class="n">{g.items.length}</span>
+                  </summary>
+                  <ul>
+                    {g.items.map((i) => (
+                      <li>{i}</li>
+                    ))}
+                  </ul>
+                </details>
+              ))}
+              <Chips items={l.data.topics} />
+              {l.data.links.length > 0 && (
+                <p class="links">
+                  {l.data.links.map((x) => (
+                    <a href={x.url}>{x.label}</a>
+                  ))}
+                </p>
+              )}
+            </div>
+          </div>
         ))
       }
+
+        <div class="panel">
+          <div>
+            <h3>{challenge.data.title}</h3>
+            <p class="status" data-status={challenge.data.status}>{labels[challenge.data.status]}</p>
+            <p>{challenge.data.summary}</p>
+            <Chips items={challenge.data.tech} />
+          </div>
+        </div>
+
+        <div class="panel">
+          <div>
+            <h3>NFC projects</h3>
+            <p class="status" data-status="completed">{labels.completed}</p>
+            <p>Small everyday projects built with NFC tags.</p>
+            <h4>{nfc.data.title}</h4>
+            <p>{nfc.data.summary}</p>
+            <NfcFlow />
+            {nfcSmall.map((p) => (
+              <h4>{p.data.title}</h4>
+              <p>{p.data.summary}</p>
+            ))}
+            <Chips items={['NFC', 'Google Apps Script', 'Google Sheets']} />
+          </div>
+        </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="skills-heading">
+    <h2 id="skills-heading">Skills</h2>
+    <div class="skills">
+      <div>
+        <h3>Used in my projects</h3>
+        <p>
+          Python, pandas, Flask, MySQL, PHP, Kotlin, SQLite, Flutter, Dart,
+          Unity, C#, HTML, CSS, JavaScript, Git and GitHub, Google Apps
+          Script, Blender, Lens Studio
+        </p>
+      </div>
+      <div>
+        <h3>Currently learning</h3>
+        <p>Azure and AI development, Claude Code, automated testing</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact" aria-labelledby="contact-heading">
+    <h2 id="contact-heading">Let's talk</h2>
+    <p>Jenny Puranen, Helsinki, Finland</p>
+    <p>Languages: Finnish (native), English (C1)</p>
+    <ul class="contact-row plain">
+      <li><a class="btn" href="mailto:puranenjenny@gmail.com">puranenjenny@gmail.com</a></li>
+      <li>
+        <button type="button" class="btn ghost copy" data-copy="puranenjenny@gmail.com">
+          Copy email
+        </button>
+        <span class="sr" role="status" data-copy-status></span>
+      </li>
+      <li><a class="btn ghost" href="https://www.linkedin.com/in/jenny-puranen/">LinkedIn</a></li>
+      <li><a class="btn ghost" href="https://github.com/puranenjenny">GitHub</a></li>
     </ul>
   </section>
 </Base>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-copy]');
+  const status = document.querySelector<HTMLElement>('[data-copy-status]');
+  btn?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(btn.dataset.copy!);
+      btn.textContent = 'Copied!';
+      if (status) status.textContent = 'Email address copied to clipboard';
+    } catch {
+      btn.textContent = 'Press Ctrl+C to copy';
+      if (status) status.textContent = 'Copying failed';
+    }
+    setTimeout(() => (btn.textContent = 'Copy email'), 2500);
+  });
+</script>

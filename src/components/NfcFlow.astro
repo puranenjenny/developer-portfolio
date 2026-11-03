@@ -1,0 +1,78 @@
+---
+const steps = [
+  ['Phone reads', 'the NFC tag'],
+  ['Script runs', ''],
+  ['Feeding time logged', 'to Google Sheets'],
+];
+const w = 150;
+const gap = 30;
+const total = steps.length * w + (steps.length - 1) * gap;
+---
+
+<figure class="flow">
+  <svg
+    viewBox={`0 0 ${total} 80`}
+    role="img"
+    aria-labelledby="flow-title"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title id="flow-title">
+      Flow: the phone reads the NFC tag, a script runs and the feeding time is
+      logged to Google Sheets.
+    </title>
+    {
+      steps.map((s, i) => (
+        <g>
+          <rect x={i * (w + gap)} y="5" width={w} height="70" rx="12" />
+          <text x={i * (w + gap) + w / 2} y={s[1] ? 36 : 45} text-anchor="middle">{s[0]}</text>{s[1] && <text x={i * (w + gap) + w / 2} y="58" text-anchor="middle">{s[1]}</text>}
+          {i < steps.length - 1 && (
+            <path
+              d={`M${i * (w + gap) + w + 6} 40 H${(i + 1) * (w + gap) - 6}`}
+              marker-end="url(#arrow)"
+            />
+          )}
+        </g>
+      ))
+    }
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+        <path d="M0 0 L8 4 L0 8 Z" fill="currentColor"></path>
+      </marker>
+    </defs>
+  </svg>
+  </figure>
+
+<style>
+  .flow {
+    margin: 1rem 0 0;
+    max-width: 32rem;
+  }
+  @media (max-width: 40rem) {
+    .flow {
+      max-width: 100%;
+    }
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    color: var(--accent);
+  }
+  rect {
+    fill: var(--card);
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+  text {
+    fill: var(--fg);
+    font-size: 13px;
+    font-family: inherit;
+  }
+  path {
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+  }
+  figcaption {
+    font-size: 0.9rem;
+  }
+</style>
