@@ -32,6 +32,9 @@ const learning = defineCollection({
     status,
     placeholder: z.boolean().default(false),
     topics: z.array(z.string()).default([]),
+    links: z
+      .array(z.object({ label: z.string(), url: z.string().url() }))
+      .default([]),
   }),
 });
 

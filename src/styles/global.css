@@ -65,6 +65,30 @@ a {
   font-weight: bold;
   font-size: 0.9rem;
 }
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border);
+}
+.featured {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+}
+.tech {
+  font-size: 0.9rem;
+}
+.links a {
+  margin-right: 1rem;
+}
+.skills {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+.plain {
+  list-style: none;
+  padding: 0;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   html {

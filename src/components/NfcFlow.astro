@@ -1,0 +1,71 @@
+---
+const steps = ['NFC tag', 'Phone', 'Apps Script', 'Google Sheet'];
+const w = 150;
+const gap = 40;
+const total = steps.length * w + (steps.length - 1) * gap;
+---
+
+<figure class="flow">
+  <svg
+    viewBox={`0 0 ${total} 70`}
+    role="img"
+    aria-labelledby="flow-title"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title id="flow-title">
+      Flow: scan the NFC tag with a phone, which triggers a Google Apps Script
+      that adds a row to a Google Sheet.
+    </title>
+    {
+      steps.map((s, i) => (
+        <g>
+          <rect x={i * (w + gap)} y="10" width={w} height="50" rx="10" />
+          <text x={i * (w + gap) + w / 2} y="40" text-anchor="middle">
+            {s}
+          </text>
+          {i < steps.length - 1 && (
+            <path
+              d={`M${i * (w + gap) + w + 6} 35 H${(i + 1) * (w + gap) - 6}`}
+              marker-end="url(#arrow)"
+            />
+          )}
+        </g>
+      ))
+    }
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+        <path d="M0 0 L8 4 L0 8 Z" fill="currentColor"></path>
+      </marker>
+    </defs>
+  </svg>
+  <figcaption>Drawn in code. Scan, run the script, log the feeding time.</figcaption>
+</figure>
+
+<style>
+  .flow {
+    margin: 1rem 0 0;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    color: var(--accent);
+  }
+  rect {
+    fill: var(--card);
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+  text {
+    fill: var(--fg);
+    font-size: 16px;
+    font-family: inherit;
+  }
+  path {
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+  }
+  figcaption {
+    font-size: 0.9rem;
+  }
+</style>
