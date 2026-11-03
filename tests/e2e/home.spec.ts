@@ -26,6 +26,14 @@ test('no accessibility violations (axe)', async ({ page }) => {
   expect(results.violations).toEqual([]);
 });
 
+test('gallery next button advances the screenshot counter', async ({ page }) => {
+  await page.goto('./');
+  const gallery = page.locator('[data-gallery]').first();
+  await expect(gallery.locator('.count')).toHaveText(/^1 \/ \d+$/);
+  await gallery.getByRole('button', { name: /^Next screenshot/ }).click();
+  await expect(gallery.locator('.count')).toHaveText(/^2 \/ \d+$/);
+});
+
 test('has no horizontal scroll on a mobile viewport', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 700 });
   await page.goto('./');

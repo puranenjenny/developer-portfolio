@@ -3,6 +3,7 @@ title: 60-minute full-stack challenge
 summary: A small experimental prototype, built in a one-hour time-limited coding challenge with AI-assisted development.
 status: experiment
 featured: false
+group: more
 tech: [Python, FastAPI, HTML, CSS, JavaScript, JSON]
 role: Built on my own.
 ---

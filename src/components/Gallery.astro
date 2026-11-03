@@ -1,0 +1,106 @@
+---
+const { files, altPrefix } = Astro.props as { files: string[]; altPrefix: string };
+import { withBase } from '../utils/url';
+const n = files.length;
+---
+
+<div class="gallery" data-gallery>
+  <div
+    class="track"
+    role="region"
+    tabindex="0"
+    aria-label={`${altPrefix}: ${n} ${n === 1 ? 'screenshot' : 'screenshots'}, scroll sideways to see more`}
+  >
+    {
+      files.map((f, i) => (
+        <img
+          src={withBase(`projects/${f}`)}
+          alt={`${altPrefix}, screenshot ${i + 1} of ${n}`}
+          loading="lazy"
+          decoding="async"
+        />
+      ))
+    }
+  </div>
+  {
+    n > 1 && (
+      <div class="controls" hidden>
+        <button type="button" data-dir="-1" aria-label={`Previous screenshot of ${altPrefix}`}>
+          ‹ Prev
+        </button>
+        <span class="count" aria-live="polite">1 / {n}</span>
+        <button type="button" data-dir="1" aria-label={`Next screenshot of ${altPrefix}`}>
+          Next ›
+        </button>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((g) => {
+    const track = g.querySelector<HTMLElement>('.track')!;
+    const controls = g.querySelector<HTMLElement>('.controls');
+    if (!controls) return;
+    controls.hidden = false;
+    const count = controls.querySelector('.count')!;
+    const total = track.children.length;
+    const index = () => Math.round(track.scrollLeft / track.clientWidth);
+    track.addEventListener('scroll', () => {
+      count.textContent = `${Math.min(index() + 1, total)} / ${total}`;
+    });
+    controls.querySelectorAll<HTMLButtonElement>('button').forEach((b) =>
+      b.addEventListener('click', () => {
+        const next = Math.max(0, Math.min(total - 1, index() + Number(b.dataset.dir)));
+        track.scrollTo({
+          left: next * track.clientWidth,
+          behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        });
+      }),
+    );
+  });
+</script>
+
+<style>
+  .gallery {
+    margin-bottom: 0.75rem;
+  }
+  .track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    background: #fff;
+  }
+  .track img {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 16rem;
+    object-fit: contain;
+    scroll-snap-align: start;
+  }
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.4rem;
+  }
+  .controls button {
+    font: inherit;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--accent);
+    border-radius: 0.25rem;
+    background: var(--card);
+    color: var(--accent);
+    cursor: pointer;
+  }
+  .count {
+    font-size: 0.9rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .track {
+      scroll-behavior: auto;
+    }
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+import Gallery from './Gallery.astro';
+
+const { entry } = Astro.props;
+const d = entry.data;
+const labels = {
+  completed: 'Completed',
+  'in-progress': 'In progress',
+  experiment: 'Experiment',
+} as const;
+---
+
+<li class="card">
+  {d.gallery && <Gallery files={d.gallery.files} altPrefix={d.gallery.altPrefix} />}
+  <h3>{d.title}</h3>
+  <p class="status" data-status={d.status}>{labels[d.status as keyof typeof labels]}</p>
+  <p>{d.summary}</p>
+  {d.role && <p><strong>My role:</strong> {d.role}</p>}
+  {d.collaborators.length > 0 && <p><strong>Team:</strong> {d.collaborators.join(', ')}</p>}
+  <p class="tech">{d.tech.join(' · ')}</p>
+  {
+    d.links.length > 0 && (
+      <p class="links">
+        {d.links.map((l: { label: string; url: string }) => (
+          <a href={l.url}>{l.label}</a>
+        ))}
+      </p>
+    )
+  }
+</li>

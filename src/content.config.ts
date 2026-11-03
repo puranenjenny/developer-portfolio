@@ -19,7 +19,14 @@ const projects = defineCollection({
     links: z
       .array(z.object({ label: z.string(), url: z.string().url() }))
       .default([]),
-    image: z.object({ src: z.string(), alt: z.string() }).optional(),
+    gallery: z
+      .object({
+        files: z.array(z.string()).min(1),
+        // Used for generated alt text until per-image descriptions are written.
+        altPrefix: z.string(),
+      })
+      .optional(),
+    group: z.enum(['featured', 'mobile', 'games', 'more']).default('more'),
     caseStudy: z.boolean().default(false),
   }),
 });
@@ -32,6 +39,13 @@ const learning = defineCollection({
     status,
     placeholder: z.boolean().default(false),
     topics: z.array(z.string()).default([]),
+    progress: z.string().optional(),
+    courses: z
+      .array(z.object({ title: z.string(), done: z.boolean() }))
+      .default([]),
+    gallery: z
+      .object({ files: z.array(z.string()).min(1), altPrefix: z.string() })
+      .optional(),
     links: z
       .array(z.object({ label: z.string(), url: z.string().url() }))
       .default([]),
