@@ -1,0 +1,69 @@
+name: PR preview
+
+# Publishes each same-repo PR to https://<owner>.github.io/developer-portfolio/pr-<n>/
+# (served on the custom domain as https://puranenjenny.dev/developer-portfolio/pr-<n>/).
+# Only the pr-<n>/ folder of the gh-pages branch is ever written.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: preview-gh-pages
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    # Fork PRs get a read-only token and must not publish.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PR: ${{ github.event.pull_request.number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Build under the preview subpath
+        run: npm run build
+        env:
+          BASE_PATH: /developer-portfolio/pr-${{ github.event.pull_request.number }}/
+      - name: Publish to gh-pages/pr-N only
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null; then
+            git fetch origin gh-pages
+            git worktree add ../pages origin/gh-pages
+            git -C ../pages checkout -B gh-pages
+          else
+            git worktree add --detach ../pages
+            git -C ../pages checkout --orphan gh-pages
+            git -C ../pages rm -rf . >/dev/null 2>&1 || true
+          fi
+          touch ../pages/.nojekyll
+          rm -rf "../pages/pr-${PR}"
+          mkdir -p "../pages/pr-${PR}"
+          cp -R dist/. "../pages/pr-${PR}/"
+          cd ../pages
+          git add -A
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Preview for PR #${PR} (${GITHUB_SHA::7})"
+          git push origin gh-pages
+      - name: Comment preview URL
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          OWNER="${REPO%%/*}"
+          NAME="${REPO##*/}"
+          BODY="Preview: https://${OWNER}.github.io/${NAME}/pr-${PR}/ (custom-domain form: https://puranenjenny.dev/${NAME}/pr-${PR}/). Updated for commit ${GITHUB_SHA::7}. It can take a minute for Pages to refresh."
+          gh pr comment "$PR" --repo "$REPO" --edit-last --create-if-none --body "$BODY"

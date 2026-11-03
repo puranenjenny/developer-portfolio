@@ -1,0 +1,35 @@
+name: PR preview cleanup
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: preview-gh-pages
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PR: ${{ github.event.pull_request.number }}
+    steps:
+      # Only the gh-pages branch is checked out; no PR code is executed.
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+        continue-on-error: true
+      - name: Remove pr-N folder
+        run: |
+          set -euo pipefail
+          if [ ! -d "pr-${PR}" ]; then echo "Nothing to remove"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -rf "pr-${PR}"
+          git commit -m "Remove preview for PR #${PR}"
+          git push origin gh-pages
