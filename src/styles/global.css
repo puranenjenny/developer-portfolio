@@ -1,15 +1,17 @@
 :root {
-  --bg: #fbf5ec;
-  --fg: #2d2118;
-  --accent: #9c3d17;
-  --sage: #3f5b45;
-  --sage-bg: #e1ead8;
-  --ochre: #6b4a00;
-  --ochre-bg: #f6e3b4;
-  --clay-bg: #f8dccb;
-  --card: #fffaf2;
-  --paper: #f3e9da;
-  --border: #d9c7b0;
+  --bg: #28242b;
+  --fg: #f6efe9;
+  --muted: #d6cbd0;
+  --accent: #f4b98d;
+  --on-accent: #28242b;
+  --sage: #d4e8cf;
+  --sage-bg: #3b5441;
+  --ochre: #f6dfa0;
+  --ochre-bg: #5c4a1a;
+  --clay-bg: #5a3a34;
+  --card: rgba(61, 53, 66, 0.94);
+  --paper: rgba(40, 36, 43, 0.75);
+  --border: #5a4f61;
   --display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
   font-family: Georgia, 'Times New Roman', serif;
   line-height: 1.6;
@@ -19,6 +21,17 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
+}
+
+/* Fixed layer instead of background-attachment, which is unreliable on iOS */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(rgba(40, 36, 43, 0.25), rgba(40, 36, 43, 0.6)),
+    url('../assets/clouds.jpg') center / cover no-repeat;
 }
 
 main,
@@ -46,7 +59,7 @@ h2 {
   font-size: clamp(1.5rem, 3.5vw, 2rem);
   margin: 0 0 1.25rem;
   padding-bottom: 0.9rem;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='8' viewBox='0 0 48 8'%3E%3Cpath d='M0 4 Q6 0 12 4 T24 4 T36 4 T48 4' fill='none' stroke='%239c3d17' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='8' viewBox='0 0 48 8'%3E%3Cpath d='M0 4 Q6 0 12 4 T24 4 T36 4 T48 4' fill='none' stroke='%23f4b98d' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")
     repeat-x left bottom / 48px 8px;
 }
 
@@ -78,8 +91,8 @@ a {
 .skip-link {
   position: absolute;
   left: -999px;
-  background: var(--fg);
-  color: var(--bg);
+  background: var(--accent);
+  color: var(--on-accent);
   padding: 0.5rem 1rem;
 }
 .skip-link:focus {
@@ -116,7 +129,7 @@ a {
 .site-footer {
   border-top: 2px dotted var(--border);
   margin-top: 2rem;
-  color: #5a4636;
+  color: var(--muted);
 }
 
 .notice {
@@ -192,7 +205,7 @@ a {
 }
 .tech {
   font-size: 0.9rem;
-  color: #5a4636;
+  color: var(--muted);
 }
 .links a {
   margin-right: 1rem;
@@ -226,7 +239,7 @@ a {
   border: 2px solid var(--accent);
   border-radius: 999px;
   background: var(--accent);
-  color: #fffaf2;
+  color: var(--on-accent);
   font-family: system-ui, sans-serif;
   font-weight: 600;
   text-decoration: none;
@@ -238,7 +251,7 @@ a {
 .btn:hover {
   background: var(--fg);
   border-color: var(--fg);
-  color: #fffaf2;
+  color: var(--on-accent);
 }
 
 .intro {
