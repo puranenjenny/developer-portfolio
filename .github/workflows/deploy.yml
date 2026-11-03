@@ -1,0 +1,53 @@
+name: Production deploy (manual, not enabled for pushes)
+
+# Design only: runs when triggered by hand. It publishes the main build to the ROOT of
+# gh-pages and keeps every pr-*/ preview folder. Pages itself must be switched on by the
+# repository owner (source: gh-pages branch, root).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: preview-gh-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          BASE_PATH: /developer-portfolio/
+      - name: Publish to gh-pages root, keeping previews
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null; then
+            git fetch origin gh-pages
+            git worktree add ../pages origin/gh-pages
+            git -C ../pages checkout -B gh-pages
+          else
+            git worktree add --detach ../pages
+            git -C ../pages checkout --orphan gh-pages
+            git -C ../pages rm -rf . >/dev/null 2>&1 || true
+          fi
+          cd ../pages
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name 'pr-*' -exec rm -rf {} +
+          cp -R "$GITHUB_WORKSPACE"/dist/. .
+          touch .nojekyll
+          git add -A
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Deploy main (${GITHUB_SHA::7})"
+          git push origin gh-pages
