@@ -14,6 +14,7 @@ const mobile = pick(['penny-paladin', 'scatterbrain', 'vegan-voyager-helsinki'])
 const games = pick(['metsaseikkailu', 'zigzag', 'ar-jewelry-tryon']);
 const more = pick(['r-autio-oy', 'luna-maria', 'botpress-chatbot']);
 const challenge = pick(['sixty-minute-challenge'])[0];
+const nfcSmall = pick(['nfc-linkedin-keychain', 'nfc-guest-wifi']);
 const nfc = pick(['nfc-cat-feeder'])[0];
 const learning = await getCollection('learning');
 
@@ -66,18 +67,6 @@ const labels = {
     <ul class="cards three">{more.map((p) => <ProjectCard entry={p} />)}</ul>
   </section>
 
-  <section aria-labelledby="automation-heading">
-    <h2 id="automation-heading">Everyday automation</h2>
-    <div class="card">
-      <h3>{nfc.data.title}</h3>
-      <p class="status" data-status={nfc.data.status}>
-        {labels[nfc.data.status]}
-      </p>
-      <p>{nfc.data.summary}</p>
-      <Chips items={nfc.data.tech} />
-      <NfcFlow />
-    </div>
-  </section>
   </div>
 
   <section id="learning" aria-labelledby="learning-heading">
@@ -102,13 +91,18 @@ const labels = {
               </p>
               <p>{l.data.summary}</p>
               {l.data.courses.length > 0 && (
-                <ul class="courses">
-                  {l.data.courses.map((c) => (
-                    <li>
-                      {c.title} ({c.done ? 'done' : 'in progress'})
-                    </li>
-                  ))}
-                </ul>
+                <details class="events" open>
+                  <summary>
+                    Courses <span class="n">{l.data.courses.length}</span>
+                  </summary>
+                  <ul>
+                    {l.data.courses.map((c) => (
+                      <li>
+                        {c.title} ({c.done ? 'done' : 'in progress'})
+                      </li>
+                    ))}
+                  </ul>
+                </details>
               )}
               {l.data.eventGroups.map((g) => (
                 <details class="events" open={g.open}>
@@ -144,6 +138,20 @@ const labels = {
           </div>
         </div>
     </div>
+  </section>
+
+  <section aria-labelledby="nfc-heading">
+    <h2 id="nfc-heading">NFC projects</h2>
+    <ul class="cards two">
+      <li class="card wide">
+        <h3>{nfc.data.title}</h3>
+        <p class="status" data-status={nfc.data.status}>{labels[nfc.data.status]}</p>
+        <p>{nfc.data.summary}</p>
+        <NfcFlow />
+        <Chips items={nfc.data.tech} />
+      </li>
+      {nfcSmall.map((p) => <ProjectCard entry={p} />)}
+    </ul>
   </section>
 
   <section aria-labelledby="skills-heading">

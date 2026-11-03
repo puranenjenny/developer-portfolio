@@ -1,7 +1,7 @@
 ---
 title: Botpress portfolio chatbot
 summary: A chatbot that answers questions about me from a knowledge base. I added it to my current portfolio to try conversational AI and third-party integrations.
-status: experiment
+status: completed
 group: more
 tech: [Botpress, NLP]
 gallery:
