@@ -73,7 +73,7 @@ section {
 #projects,
 #learning,
 #contact {
-  scroll-margin-top: 4rem;
+  scroll-margin-top: 5rem;
 }
 
 a {
@@ -99,6 +99,14 @@ a {
 }
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  max-width: none;
+  padding: 0.6rem max(1rem, calc((100% - 70rem) / 2));
+  background: rgba(40, 36, 43, 0.72);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -113,18 +121,33 @@ a {
 }
 .nav {
   display: flex;
-  gap: 1.25rem;
+  gap: 0.25rem;
   margin: 0;
 }
 .nav a {
+  display: block;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
   color: var(--fg);
-  font-weight: bold;
-  text-decoration-color: var(--accent);
-  text-underline-offset: 0.3em;
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.nav a:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.nav li:last-child a {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.nav li:last-child a:hover {
+  background: var(--fg);
 }
 
 .site-footer {
-  border-top: 2px dotted var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   margin-top: 2rem;
   color: var(--muted);
 }
@@ -159,19 +182,30 @@ a {
 }
 
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  padding: 1rem 1.25rem 1.25rem;
-  box-shadow: 0 2px 0 var(--border);
+  background: rgba(40, 36, 43, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 1rem 1.25rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
+  }
 }
 .card > :last-child {
   margin-bottom: 0;
 }
-.card .tech {
+.card .chips {
   margin-top: auto;
+  padding-top: 0.75rem;
 }
 
 .status {
@@ -242,8 +276,10 @@ a {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 }
 .skills > div {
-  background: var(--paper);
-  border-radius: 1rem;
+  background: rgba(40, 36, 43, 0.72);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
   padding: 0.5rem 1.25rem 1rem;
 }
 
@@ -288,8 +324,10 @@ a {
 }
 
 .contact {
-  background: var(--paper);
-  border-radius: 1.25rem;
+  background: rgba(40, 36, 43, 0.72);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
   padding: 1.5rem;
 }
 
@@ -304,8 +342,10 @@ a {
   gap: 1.5rem;
 }
 .panel {
-  background: var(--paper);
-  border-radius: 1rem;
+  background: rgba(40, 36, 43, 0.72);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
   padding: 1rem 1.25rem 1.25rem;
   display: grid;
   gap: 1.25rem;
@@ -324,4 +364,19 @@ a {
 .courses {
   margin: 0.5rem 0;
   padding-left: 1.25rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0;
+}
+.chips li {
+  padding: 0.1rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--muted);
+  font-family: system-ui, sans-serif;
+  font-size: 0.78rem;
 }

@@ -1,0 +1,11 @@
+---
+const { items } = Astro.props as { items: string[] };
+---
+
+{
+  items.length > 0 && (
+    <ul class="chips plain" aria-label="Technologies">
+      {items.map((t) => <li>{t}</li>)}
+    </ul>
+  )
+}

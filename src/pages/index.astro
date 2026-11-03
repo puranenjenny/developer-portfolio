@@ -2,16 +2,18 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import NfcFlow from '../components/NfcFlow.astro';
+import Chips from '../components/Chips.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { withBase } from '../utils/url';
 
 const projects = await getCollection('projects');
 const pick = (ids: string[]) => ids.map((id) => projects.find((p) => p.id === id)!);
 
-const featured = pick(['chatlog-analyzer', 'git-github-student-guide', 'r-autio-oy']);
+const featured = pick(['chatlog-analyzer', 'git-github-student-guide']);
 const mobile = pick(['penny-paladin', 'scatterbrain', 'vegan-voyager-helsinki']);
 const games = pick(['metsaseikkailu', 'zigzag', 'ar-jewelry-tryon']);
-const more = pick(['luna-maria', 'botpress-chatbot', 'sixty-minute-challenge']);
+const more = pick(['r-autio-oy', 'luna-maria', 'botpress-chatbot']);
+const challenge = pick(['sixty-minute-challenge'])[0];
 const nfc = pick(['nfc-cat-feeder'])[0];
 const learning = await getCollection('learning');
 
@@ -59,7 +61,7 @@ const labels = {
   </section>
 
   <section aria-labelledby="more-heading">
-    <h2 id="more-heading">Creative web, AI &amp; experiments</h2>
+    <h2 id="more-heading">Web &amp; chatbots</h2>
     <ul class="cards three">{more.map((p) => <ProjectCard entry={p} />)}</ul>
   </section>
 
@@ -71,7 +73,7 @@ const labels = {
         {labels[nfc.data.status]}
       </p>
       <p>{nfc.data.summary}</p>
-      <p class="tech">{nfc.data.tech.join(' · ')}</p>
+      <Chips items={nfc.data.tech} />
       <NfcFlow />
     </div>
   </section>
@@ -107,7 +109,7 @@ const labels = {
                   ))}
                 </ul>
               )}
-              <p class="tech">{l.data.topics.join(' · ')}</p>
+              <Chips items={l.data.topics} />
               {l.data.links.length > 0 && (
                 <p class="links">
                   {l.data.links.map((x) => (
@@ -119,6 +121,15 @@ const labels = {
           </div>
         ))
       }
+
+        <div class="panel">
+          <div>
+            <h3>{challenge.data.title}</h3>
+            <p class="status" data-status={challenge.data.status}>{labels[challenge.data.status]}</p>
+            <p>{challenge.data.summary}</p>
+            <Chips items={challenge.data.tech} />
+          </div>
+        </div>
     </div>
   </section>
 

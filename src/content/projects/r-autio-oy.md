@@ -2,8 +2,8 @@
 title: R. Autio Oy website
 summary: A full-stack PHP and MySQL website for a fictional property maintenance company, made as a school project. I led the team and designed the look of the site, and I coded my share like everyone else.
 status: completed
-featured: true
-group: featured
+featured: false
+group: more
 tech: [PHP, MySQL, HTML, CSS]
 role: Team leader and visual designer.
 collaborators: [Mira Hosio, Antti Kortelainen]

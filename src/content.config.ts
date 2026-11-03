@@ -26,7 +26,7 @@ const projects = defineCollection({
         altPrefix: z.string(),
       })
       .optional(),
-    group: z.enum(['featured', 'mobile', 'games', 'more']).default('more'),
+    group: z.enum(['featured', 'mobile', 'games', 'more', 'learning']).default('more'),
     caseStudy: z.boolean().default(false),
   }),
 });
