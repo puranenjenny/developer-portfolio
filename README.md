@@ -6,7 +6,7 @@ Work-in-progress developer portfolio built with Astro, TypeScript and (where nee
 
 ## Local development
 
-Requires Node 22 (`nvm use` reads `.nvmrc`).
+Requires Node 24 (`nvm use` reads `.nvmrc`).
 
 ```sh
 npm ci
