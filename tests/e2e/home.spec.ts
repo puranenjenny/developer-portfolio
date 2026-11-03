@@ -29,9 +29,9 @@ test('no accessibility violations (axe)', async ({ page }) => {
 test('gallery next button advances the screenshot counter', async ({ page }) => {
   await page.goto('./');
   const gallery = page.locator('[data-gallery]').first();
-  await expect(gallery.locator('.count')).toHaveText(/^1 \/ \d+$/);
+  await expect(gallery.locator('[data-now]')).toHaveText('1');
   await gallery.getByRole('button', { name: /^Next screenshot/ }).click();
-  await expect(gallery.locator('.count')).toHaveText(/^2 \/ \d+$/);
+  await expect(gallery.locator('[data-now]')).toHaveText('2');
 });
 
 test('header navigation links point to existing sections', async ({ page }) => {

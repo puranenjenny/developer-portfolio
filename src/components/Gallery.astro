@@ -9,34 +9,59 @@ const n = files.length;
 ---
 
 <div class:list={['gallery', { tall }]} data-gallery>
-  <div
-    class="track"
-    role="region"
-    tabindex="0"
-    aria-label={`${altPrefix}: ${n} ${n === 1 ? 'screenshot' : 'screenshots'}, scroll sideways to see more`}
-  >
+  <div class="frame">
+    <div
+      class="track"
+      role="region"
+      tabindex="0"
+      aria-label={`${altPrefix}: ${n} ${n === 1 ? 'screenshot' : 'screenshots'}, scroll sideways to see more`}
+    >
+      {
+        files.map((f, i) => (
+          <img
+            src={withBase(`projects/${f}`)}
+            alt={`${altPrefix}, screenshot ${i + 1} of ${n}`}
+            loading="lazy"
+            decoding="async"
+          />
+        ))
+      }
+    </div>
     {
-      files.map((f, i) => (
-        <img
-          src={withBase(`projects/${f}`)}
-          alt={`${altPrefix}, screenshot ${i + 1} of ${n}`}
-          loading="lazy"
-          decoding="async"
-        />
-      ))
+      n > 1 && (
+        <div class="controls" hidden>
+          <button
+            type="button"
+            class="arrow prev"
+            data-dir="-1"
+            aria-label={`Previous screenshot of ${altPrefix}`}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 5l-7 7 7 7" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="arrow next"
+            data-dir="1"
+            aria-label={`Next screenshot of ${altPrefix}`}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      )
     }
   </div>
   {
     n > 1 && (
-      <div class="controls" hidden>
-        <button type="button" data-dir="-1" aria-label={`Previous screenshot of ${altPrefix}`}>
-          ‹ Prev
-        </button>
-        <span class="count" aria-live="polite">1 / {n}</span>
-        <button type="button" data-dir="1" aria-label={`Next screenshot of ${altPrefix}`}>
-          Next ›
-        </button>
-      </div>
+      <p class="dots" aria-live="polite" hidden>
+        {files.map((_, i) => (
+          <span class:list={['dot', { on: i === 0 }]} />
+        ))}
+        <span class="sr">Screenshot <span data-now>1</span> of {n}</span>
+      </p>
     )
   }
 </div>
@@ -45,19 +70,30 @@ const n = files.length;
   document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((g) => {
     const track = g.querySelector<HTMLElement>('.track')!;
     const controls = g.querySelector<HTMLElement>('.controls');
-    if (!controls) return;
+    const dots = g.querySelector<HTMLElement>('.dots');
+    if (!controls || !dots) return;
     controls.hidden = false;
-    const count = controls.querySelector('.count')!;
+    dots.hidden = false;
     const total = track.children.length;
-    const index = () => Math.round(track.scrollLeft / track.clientWidth);
-    track.addEventListener('scroll', () => {
-      count.textContent = `${Math.min(index() + 1, total)} / ${total}`;
-    });
+    const now = dots.querySelector('[data-now]')!;
+    const dotEls = dots.querySelectorAll('.dot');
+    const prev = controls.querySelector<HTMLButtonElement>('.prev')!;
+    const next = controls.querySelector<HTMLButtonElement>('.next')!;
+    const index = () => Math.min(total - 1, Math.round(track.scrollLeft / track.clientWidth));
+    const update = () => {
+      const i = index();
+      dotEls.forEach((d, k) => d.classList.toggle('on', k === i));
+      now.textContent = String(i + 1);
+      prev.disabled = i === 0;
+      next.disabled = i === total - 1;
+    };
+    track.addEventListener('scroll', update, { passive: true });
+    update();
     controls.querySelectorAll<HTMLButtonElement>('button').forEach((b) =>
       b.addEventListener('click', () => {
-        const next = Math.max(0, Math.min(total - 1, index() + Number(b.dataset.dir)));
+        const to = Math.max(0, Math.min(total - 1, index() + Number(b.dataset.dir)));
         track.scrollTo({
-          left: next * track.clientWidth,
+          left: to * track.clientWidth,
           behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
         });
       }),
@@ -69,13 +105,20 @@ const n = files.length;
   .gallery {
     margin-bottom: 0.75rem;
   }
+  .frame {
+    position: relative;
+  }
   .track {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    scrollbar-width: none;
     border: 1px solid var(--border);
     border-radius: 0.75rem;
     background: var(--paper);
+  }
+  .track::-webkit-scrollbar {
+    display: none;
   }
   .track img {
     flex: 0 0 100%;
@@ -95,27 +138,85 @@ const n = files.length;
     }
   }
   .controls {
+    position: absolute;
+    inset: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0.4rem;
+    padding: 0 0.5rem;
+    pointer-events: none;
   }
-  .controls button {
-    font: inherit;
-    padding: 0.25rem 0.7rem;
-    font-size: 0.9rem;
-    border: 1px solid var(--accent);
-    border-radius: 999px;
-    background: var(--card);
+  .controls[hidden] {
+    display: none;
+  }
+  .arrow {
+    pointer-events: auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(40, 36, 43, 0.82);
     color: var(--accent);
     cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    transition:
+      background 0.15s,
+      color 0.15s;
   }
-  .count {
-    font-size: 0.9rem;
+  .arrow svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .arrow:hover:not(:disabled) {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .arrow:disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: 0.55rem 0 0;
+  }
+  .dots[hidden] {
+    display: none;
+  }
+  .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.15s;
+  }
+  .dot.on {
+    background: var(--accent);
+  }
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
   @media (prefers-reduced-motion: reduce) {
     .track {
       scroll-behavior: auto;
+    }
+    .arrow,
+    .dot {
+      transition: none;
     }
   }
 </style>
