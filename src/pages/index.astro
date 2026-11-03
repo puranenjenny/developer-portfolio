@@ -21,6 +21,7 @@ const labels = {
   completed: 'Completed',
   'in-progress': 'In progress',
   experiment: 'Experiment',
+  community: 'Workshops & webinars, not certifications',
 } as const;
 ---
 
@@ -109,6 +110,18 @@ const labels = {
                   ))}
                 </ul>
               )}
+              {l.data.eventGroups.map((g) => (
+                <details class="events" open={g.open}>
+                  <summary>
+                    {g.title} <span class="n">{g.items.length}</span>
+                  </summary>
+                  <ul>
+                    {g.items.map((i) => (
+                      <li>{i}</li>
+                    ))}
+                  </ul>
+                </details>
+              ))}
               <Chips items={l.data.topics} />
               {l.data.links.length > 0 && (
                 <p class="links">

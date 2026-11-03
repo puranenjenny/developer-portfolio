@@ -224,6 +224,10 @@ a {
   background: var(--ochre-bg);
   color: var(--ochre);
 }
+.status[data-status='community'] {
+  background: #2f3f5a;
+  color: #cfe0ff;
+}
 .status[data-status='experiment'] {
   background: var(--clay-bg);
   color: var(--accent);
@@ -379,4 +383,26 @@ a {
   color: var(--muted);
   font-family: system-ui, sans-serif;
   font-size: 0.78rem;
+}
+
+.events {
+  margin: 0.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 0.5rem;
+}
+.events summary {
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  font-weight: 600;
+}
+.events .n {
+  margin-left: 0.4rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.8rem;
+}
+.events ul {
+  margin: 0.4rem 0 0.25rem;
+  padding-left: 1.25rem;
 }

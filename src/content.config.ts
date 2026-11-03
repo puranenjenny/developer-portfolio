@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 // Keeps completed work, ongoing studies and experiments clearly distinguished.
-const status = z.enum(['completed', 'in-progress', 'experiment']);
+const status = z.enum(['completed', 'in-progress', 'experiment', 'community']);
 
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
@@ -40,6 +40,15 @@ const learning = defineCollection({
     placeholder: z.boolean().default(false),
     topics: z.array(z.string()).default([]),
     progress: z.string().optional(),
+    eventGroups: z
+      .array(
+        z.object({
+          title: z.string(),
+          open: z.boolean().default(false),
+          items: z.array(z.string()),
+        }),
+      )
+      .default([]),
     courses: z
       .array(z.object({ title: z.string(), done: z.boolean() }))
       .default([]),
