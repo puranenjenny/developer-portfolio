@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import NfcFlow from '../components/NfcFlow.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import Gallery from '../components/Gallery.astro';
+import { withBase } from '../utils/url';
 
 const projects = await getCollection('projects');
 const pick = (ids: string[]) => ids.map((id) => projects.find((p) => p.id === id)!);
@@ -61,10 +61,6 @@ const labels = {
   <section aria-labelledby="more-heading">
     <h2 id="more-heading">Creative web, AI &amp; experiments</h2>
     <ul class="cards three">{more.map((p) => <ProjectCard entry={p} />)}</ul>
-    <p>
-      An experiment is a small prototype I built to try something out. It is
-      not a finished product.
-    </p>
   </section>
 
   <section aria-labelledby="automation-heading">
@@ -72,7 +68,7 @@ const labels = {
     <div class="card">
       <h3>{nfc.data.title}</h3>
       <p class="status" data-status={nfc.data.status}>
-        {labels[nfc.data.status]}, in daily use
+        {labels[nfc.data.status]}
       </p>
       <p>{nfc.data.summary}</p>
       <p class="tech">{nfc.data.tech.join(' · ')}</p>
@@ -82,44 +78,48 @@ const labels = {
   </div>
 
   <section id="learning" aria-labelledby="learning-heading">
-    <h2 id="learning-heading">Learning &amp; experiments</h2>
-    <ul class="cards two">
+    <h2 id="learning-heading">Learning</h2>
+    <div class="learning">
       {
         learning.map((l) => (
-          <li class="card">
+          <div class="panel">
             {l.data.gallery && (
-              <Gallery files={l.data.gallery.files} altPrefix={l.data.gallery.altPrefix} />
+              <img
+                src={withBase(`projects/${l.data.gallery.files[0]}`)}
+                alt={l.data.gallery.altPrefix}
+                loading="lazy"
+                decoding="async"
+              />
             )}
-            <h3>{l.data.title}</h3>
-            <p class="status" data-status={l.data.status}>
-              {labels[l.data.status]}
-              {l.data.progress && `, ${l.data.progress}`}
-            </p>
-            <p>{l.data.summary}</p>
-            {l.data.courses.length > 0 && (
-              <details>
-                <summary>Courses</summary>
-                <ul>
+            <div>
+              <h3>{l.data.title}</h3>
+              <p class="status" data-status={l.data.status}>
+                {labels[l.data.status]}
+                {l.data.progress && `, ${l.data.progress}`}
+              </p>
+              <p>{l.data.summary}</p>
+              {l.data.courses.length > 0 && (
+                <ul class="courses">
                   {l.data.courses.map((c) => (
                     <li>
                       {c.title} ({c.done ? 'done' : 'in progress'})
                     </li>
                   ))}
                 </ul>
-              </details>
-            )}
-            <p class="tech">{l.data.topics.join(' · ')}</p>
-            {l.data.links.length > 0 && (
-              <p class="links">
-                {l.data.links.map((x) => (
-                  <a href={x.url}>{x.label}</a>
-                ))}
-              </p>
-            )}
-          </li>
+              )}
+              <p class="tech">{l.data.topics.join(' · ')}</p>
+              {l.data.links.length > 0 && (
+                <p class="links">
+                  {l.data.links.map((x) => (
+                    <a href={x.url}>{x.label}</a>
+                  ))}
+                </p>
+              )}
+            </div>
+          </div>
         ))
       }
-    </ul>
+    </div>
   </section>
 
   <section aria-labelledby="skills-heading">

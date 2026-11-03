@@ -23,7 +23,7 @@ body {
   color: var(--fg);
 }
 
-/* Fixed layer instead of background-attachment, which is unreliable on iOS */
+/* Photo from Unsplash by Lukasz Lada (@lukaszlada). Fixed layer instead of background-attachment, which is unreliable on iOS */
 body::before {
   content: '';
   position: fixed;
@@ -58,9 +58,6 @@ h1 {
 h2 {
   font-size: clamp(1.5rem, 3.5vw, 2rem);
   margin: 0 0 1.25rem;
-  padding-bottom: 0.9rem;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='8' viewBox='0 0 48 8'%3E%3Cpath d='M0 4 Q6 0 12 4 T24 4 T36 4 T48 4' fill='none' stroke='%23f4b98d' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")
-    repeat-x left bottom / 48px 8px;
 }
 
 h3 {
@@ -272,4 +269,31 @@ a {
   html {
     scroll-behavior: smooth;
   }
+}
+
+.learning {
+  display: grid;
+  gap: 1.5rem;
+}
+.panel {
+  background: var(--paper);
+  border-radius: 1rem;
+  padding: 1rem 1.25rem 1.25rem;
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+}
+.panel > img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+@media (min-width: 48rem) {
+  .panel:has(> img) {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
+}
+.courses {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
 }

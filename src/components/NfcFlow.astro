@@ -44,6 +44,12 @@ const total = steps.length * w + (steps.length - 1) * gap;
 <style>
   .flow {
     margin: 1rem 0 0;
+    max-width: 50%;
+  }
+  @media (max-width: 40rem) {
+    .flow {
+      max-width: 100%;
+    }
   }
   svg {
     width: 100%;
