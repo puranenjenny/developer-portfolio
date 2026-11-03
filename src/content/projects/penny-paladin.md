@@ -1,11 +1,11 @@
 ---
 title: Penny Paladin
-summary: A budgeting app for Android, built as a school project to practice mobile development in an agile team.
+summary: An Android budgeting app made in Kotlin with SQLite. I led the team, ran our agile process and designed the look and feel in Figma. I also coded part of the app.
 status: completed
 featured: false
 group: mobile
 tech: [Kotlin, SQLite, Android Studio, Figma, Git, Agile]
-role: Team leader and visual designer (look and feel). I also took part in the coding.
+role: Team leader and visual designer.
 collaborators: [Mira Hosio, Antti Kortelainen]
 gallery:
   files: [pp1.png, pp2.png, pp3.png, pp4.png, pp5.png, pp6.png]

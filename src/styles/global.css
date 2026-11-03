@@ -1,9 +1,16 @@
 :root {
   --bg: #fbf5ec;
   --fg: #2d2118;
-  --accent: #8a3b12;
+  --accent: #9c3d17;
+  --sage: #3f5b45;
+  --sage-bg: #e1ead8;
+  --ochre: #6b4a00;
+  --ochre-bg: #f6e3b4;
+  --clay-bg: #f8dccb;
   --card: #fffaf2;
+  --paper: #f3e9da;
   --border: #d9c7b0;
+  --display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
   font-family: Georgia, 'Times New Roman', serif;
   line-height: 1.6;
 }
@@ -17,9 +24,46 @@ body {
 main,
 .site-header,
 .site-footer {
-  max-width: 68rem;
+  max-width: 72rem;
   margin: 0 auto;
   padding: 1rem;
+}
+
+h1,
+h2,
+h3,
+.brand {
+  font-family: var(--display);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  margin: 1.5rem 0 0.5rem;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.9rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='8' viewBox='0 0 48 8'%3E%3Cpath d='M0 4 Q6 0 12 4 T24 4 T36 4 T48 4' fill='none' stroke='%239c3d17' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")
+    repeat-x left bottom / 48px 8px;
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin: 0.75rem 0 0.25rem;
+}
+
+section {
+  margin-bottom: 3rem;
+  scroll-margin-top: 1rem;
+}
+
+#projects,
+#learning,
+#contact {
+  scroll-margin-top: 4rem;
 }
 
 a {
@@ -41,6 +85,38 @@ a {
 .skip-link:focus {
   left: 1rem;
   top: 1rem;
+  z-index: 10;
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+.brand {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--fg);
+  text-decoration: none;
+}
+.nav {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0;
+}
+.nav a {
+  color: var(--fg);
+  font-weight: bold;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.3em;
+}
+
+.site-footer {
+  border-top: 2px dotted var(--border);
+  margin-top: 2rem;
+  color: #5a4636;
 }
 
 .notice {
@@ -51,43 +127,132 @@ a {
 .cards {
   list-style: none;
   padding: 0;
+  margin: 0;
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
 }
+.cards.two,
+.cards.three {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 40rem) {
+  .cards.two,
+  .cards.three {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 64rem) {
+  .cards.three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  padding: 1rem;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem 1.25rem;
+  box-shadow: 0 2px 0 var(--border);
+  display: flex;
+  flex-direction: column;
 }
+.card > :last-child {
+  margin-bottom: 0;
+}
+.card .tech {
+  margin-top: auto;
+}
+
 .status {
-  font-weight: bold;
-  font-size: 0.9rem;
+  display: inline-block;
+  align-self: flex-start;
+  margin: 0 0 0.5rem;
+  padding: 0.1rem 0.7rem;
+  border-radius: 999px;
+  font-family: system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  background: var(--sage-bg);
+  color: var(--sage);
 }
+.status[data-status='in-progress'] {
+  background: var(--ochre-bg);
+  color: var(--ochre);
+}
+.status[data-status='experiment'] {
+  background: var(--clay-bg);
+  color: var(--accent);
+}
+
 .card img {
   width: 100%;
   height: auto;
-  border-radius: 0.25rem;
-  border: 1px solid var(--border);
-}
-.featured {
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  border-radius: 0.5rem;
 }
 .tech {
   font-size: 0.9rem;
+  color: #5a4636;
 }
 .links a {
   margin-right: 1rem;
 }
+
 .skills {
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 }
+.skills > div {
+  background: var(--paper);
+  border-radius: 1rem;
+  padding: 0.5rem 1.25rem 1rem;
+}
+
 .plain {
   list-style: none;
   padding: 0;
+}
+
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+}
+.btn {
+  display: inline-block;
+  padding: 0.55rem 1.2rem;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fffaf2;
+  font-family: system-ui, sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--accent);
+}
+.btn:hover {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: #fffaf2;
+}
+
+.intro {
+  max-width: 44rem;
+  margin-bottom: 3rem;
+}
+.intro p {
+  font-size: 1.15rem;
+}
+
+.contact {
+  background: var(--paper);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
 }
 
 @media (prefers-reduced-motion: no-preference) {

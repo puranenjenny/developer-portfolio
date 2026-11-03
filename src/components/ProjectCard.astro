@@ -11,7 +11,11 @@ const labels = {
 ---
 
 <li class="card">
-  {d.gallery && <Gallery files={d.gallery.files} altPrefix={d.gallery.altPrefix} />}
+  {
+    d.gallery && (
+      <Gallery files={d.gallery.files} altPrefix={d.gallery.altPrefix} tall={d.group === 'mobile'} />
+    )
+  }
   <h3>{d.title}</h3>
   <p class="status" data-status={d.status}>{labels[d.status as keyof typeof labels]}</p>
   <p>{d.summary}</p>

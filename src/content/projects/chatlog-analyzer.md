@@ -1,11 +1,11 @@
 ---
 title: Chatlog Analyzer
-summary: A proof-of-concept web app that analyzes chatbot conversations to show where a company's internal chatbot has knowledge gaps and where staff may need training.
+summary: My thesis project, a proof-of-concept web app that shows where a company's internal chatbot has knowledge gaps and where staff might need more training. I interviewed the client, planned the work in an agile way and built everything myself. Python and pandas sort chatbot messages into service categories, and a Flask interface presents the results as Matplotlib charts and downloadable reports. The demo data is anonymized.
 status: completed
 featured: true
 group: featured
 tech: [Python, pandas, Flask, MySQL, Matplotlib]
-role: Thesis project, done on my own, from talking with the client to planning and building the app.
+role: Solo thesis project, from client interviews to planning and development.
 gallery:
   files: [poc1.png, poc2.png, poc3.png, poc4.png, poc5.png, poc6.png]
   altPrefix: Chatlog Analyzer (interface in Finnish)

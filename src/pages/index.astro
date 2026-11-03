@@ -35,26 +35,32 @@ const labels = {
       to me. These days I work with Python, web development, data, AI and
       automation, and I'm always experimenting with something new.
     </p>
+    <ul class="contact-row plain" aria-label="Contact">
+      <li><a class="btn" href="mailto:puranenjenny@gmail.com">Email me</a></li>
+      <li><a class="btn ghost" href="https://www.linkedin.com/in/jenny-puranen/">LinkedIn</a></li>
+      <li><a class="btn ghost" href="https://github.com/puranenjenny">GitHub</a></li>
+    </ul>
   </section>
 
+  <div id="projects">
   <section aria-labelledby="featured-heading">
     <h2 id="featured-heading">Featured projects</h2>
-    <ul class="cards">{featured.map((p) => <ProjectCard entry={p} />)}</ul>
+    <ul class="cards two">{featured.map((p) => <ProjectCard entry={p} />)}</ul>
   </section>
 
   <section aria-labelledby="mobile-heading">
     <h2 id="mobile-heading">Mobile apps</h2>
-    <ul class="cards">{mobile.map((p) => <ProjectCard entry={p} />)}</ul>
+    <ul class="cards three">{mobile.map((p) => <ProjectCard entry={p} />)}</ul>
   </section>
 
   <section aria-labelledby="games-heading">
     <h2 id="games-heading">Games &amp; interactive</h2>
-    <ul class="cards">{games.map((p) => <ProjectCard entry={p} />)}</ul>
+    <ul class="cards three">{games.map((p) => <ProjectCard entry={p} />)}</ul>
   </section>
 
   <section aria-labelledby="more-heading">
     <h2 id="more-heading">Creative web, AI &amp; experiments</h2>
-    <ul class="cards">{more.map((p) => <ProjectCard entry={p} />)}</ul>
+    <ul class="cards three">{more.map((p) => <ProjectCard entry={p} />)}</ul>
     <p>
       An experiment is a small prototype I built to try something out. It is
       not a finished product.
@@ -77,10 +83,11 @@ const labels = {
       <NfcFlow />
     </div>
   </section>
+  </div>
 
-  <section aria-labelledby="learning-heading">
+  <section id="learning" aria-labelledby="learning-heading">
     <h2 id="learning-heading">Learning &amp; experiments</h2>
-    <ul class="cards">
+    <ul class="cards two">
       {
         learning.map((l) => (
           <li class="card">
@@ -137,14 +144,13 @@ const labels = {
     </div>
   </section>
 
-  <section aria-labelledby="contact-heading">
-    <h2 id="contact-heading">Contact</h2>
-    <p>Jenny Puranen, Helsinki, Finland</p>
-    <ul class="plain">
-      <li><a href="mailto:puranenjenny@gmail.com">puranenjenny@gmail.com</a></li>
-      <li><a href="https://www.linkedin.com/in/jenny-puranen/">LinkedIn</a></li>
-      <li><a href="https://github.com/puranenjenny">GitHub</a></li>
+  <section id="contact" class="contact" aria-labelledby="contact-heading">
+    <h2 id="contact-heading">Let's talk</h2>
+    <p>Jenny Puranen, Helsinki, Finland. Languages: Finnish (native), English (C1).</p>
+    <ul class="contact-row plain">
+      <li><a class="btn" href="mailto:puranenjenny@gmail.com">puranenjenny@gmail.com</a></li>
+      <li><a class="btn ghost" href="https://www.linkedin.com/in/jenny-puranen/">LinkedIn</a></li>
+      <li><a class="btn ghost" href="https://github.com/puranenjenny">GitHub</a></li>
     </ul>
-    <p>Languages: Finnish (native), English (C1)</p>
   </section>
 </Base>

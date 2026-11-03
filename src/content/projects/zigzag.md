@@ -1,11 +1,13 @@
 ---
 title: ZigZag
-summary: A meditative single-player minigame. Left click changes direction, and the goal is to avoid falling off the edge.
+summary: A small meditative Unity minigame. Click to change direction and don't fall off the edge.
 status: completed
 group: games
 tech: [Unity, C#]
-role: Made fully by me.
 gallery:
   files: [ZZ1.png]
   altPrefix: ZigZag minigame
+links:
+  - label: Play on itch.io
+    url: https://puranenjenny.itch.io/zigzag-microgame
 ---

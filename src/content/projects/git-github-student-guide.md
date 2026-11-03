@@ -1,11 +1,11 @@
 ---
 title: Git & GitHub Student Guide
-summary: A Finnish-language guide to version control that new students at Lapland University of Applied Sciences now use. We wrote it because we struggled to find good guidance ourselves.
+summary: A Finnish-language guide to version control, made because we struggled to find good guidance ourselves. It's now used by new students at Lapland UAS. Antti and I both contributed to the code and the learning material, and early student testers gave very positive feedback.
 status: completed
 featured: true
 group: featured
 tech: [HTML, CSS, JavaScript, Git, GitHub Pages, GitHub Projects]
-role: Project manager (sprint planning, coordination, GitHub Projects, repository roles and permissions). I also coded and wrote learning materials.
+role: Project manager, responsible for sprint planning, coordination, GitHub Projects, and repository roles and permissions.
 collaborators: [Antti Kortelainen]
 gallery:
   files: [go1.png, go2.png, go3.png, go4.png, go5.png, go6.png]

@@ -34,6 +34,14 @@ test('gallery next button advances the screenshot counter', async ({ page }) => 
   await expect(gallery.locator('.count')).toHaveText(/^2 \/ \d+$/);
 });
 
+test('header navigation links point to existing sections', async ({ page }) => {
+  await page.goto('./');
+  for (const id of ['projects', 'learning', 'contact']) {
+    await expect(page.locator(`nav a[href="#${id}"]`)).toBeVisible();
+    await expect(page.locator(`#${id}`)).toHaveCount(1);
+  }
+});
+
 test('has no horizontal scroll on a mobile viewport', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 700 });
   await page.goto('./');

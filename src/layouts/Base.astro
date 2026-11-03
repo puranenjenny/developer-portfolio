@@ -1,4 +1,5 @@
 ---
+import '@fontsource-variable/fraunces';
 import '../styles/global.css';
 import { withBase } from '../utils/url';
 
@@ -24,6 +25,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <a href={withBase()} class="brand">Jenny Puranen</a>
+      <nav aria-label="Main">
+        <ul class="plain nav">
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#learning">Learning</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
     </header>
     <main id="main" tabindex="-1">
       <slot />
