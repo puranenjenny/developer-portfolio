@@ -53,18 +53,36 @@ const labels = {
   </section>
 
   <section aria-labelledby="mobile-heading">
-    <h2 id="mobile-heading">Mobile apps</h2>
-    <ul class="cards three">{mobile.map((p) => <ProjectCard entry={p} />)}</ul>
+    <details class="category">
+      <summary>
+        <h2 id="mobile-heading">Mobile apps</h2>
+        <span class="n">{mobile.length}</span>
+        <span class="teaser">Kotlin, Flutter, Dart, SQLite</span>
+      </summary>
+      <ul class="cards three">{mobile.map((p) => <ProjectCard entry={p} />)}</ul>
+    </details>
   </section>
 
   <section aria-labelledby="games-heading">
-    <h2 id="games-heading">Games &amp; interactive</h2>
-    <ul class="cards three">{games.map((p) => <ProjectCard entry={p} />)}</ul>
+    <details class="category">
+      <summary>
+        <h2 id="games-heading">Games &amp; interactive</h2>
+        <span class="n">{games.length}</span>
+        <span class="teaser">Unity, C#, Blender, Lens Studio</span>
+      </summary>
+      <ul class="cards three">{games.map((p) => <ProjectCard entry={p} />)}</ul>
+    </details>
   </section>
 
   <section aria-labelledby="more-heading">
-    <h2 id="more-heading">Web &amp; chatbots</h2>
-    <ul class="cards three">{more.map((p) => <ProjectCard entry={p} />)}</ul>
+    <details class="category">
+      <summary>
+        <h2 id="more-heading">Web &amp; chatbots</h2>
+        <span class="n">{more.length}</span>
+        <span class="teaser">PHP, MySQL, HTML, CSS, Botpress</span>
+      </summary>
+      <ul class="cards three">{more.map((p) => <ProjectCard entry={p} />)}</ul>
+    </details>
   </section>
 
   </div>
@@ -137,21 +155,23 @@ const labels = {
             <Chips items={challenge.data.tech} />
           </div>
         </div>
-    </div>
-  </section>
 
-  <section aria-labelledby="nfc-heading">
-    <h2 id="nfc-heading">NFC projects</h2>
-    <ul class="cards two">
-      <li class="card wide">
-        <h3>{nfc.data.title}</h3>
-        <p class="status" data-status={nfc.data.status}>{labels[nfc.data.status]}</p>
-        <p>{nfc.data.summary}</p>
-        <NfcFlow />
-        <Chips items={nfc.data.tech} />
-      </li>
-      {nfcSmall.map((p) => <ProjectCard entry={p} />)}
-    </ul>
+        <div class="panel">
+          <div>
+            <h3>NFC projects</h3>
+            <p class="status" data-status="completed">{labels.completed}</p>
+            <p>Small everyday projects built with NFC tags.</p>
+            <h4>{nfc.data.title}</h4>
+            <p>{nfc.data.summary}</p>
+            <NfcFlow />
+            {nfcSmall.map((p) => (
+              <h4>{p.data.title}</h4>
+              <p>{p.data.summary}</p>
+            ))}
+            <Chips items={['NFC', 'Google Apps Script', 'Google Sheets']} />
+          </div>
+        </div>
+    </div>
   </section>
 
   <section aria-labelledby="skills-heading">
@@ -167,18 +187,41 @@ const labels = {
       </div>
       <div>
         <h3>Currently learning</h3>
-        <p>Azure and AI development, AWS, Claude Code, automated testing</p>
+        <p>Azure and AI development, Claude Code, automated testing</p>
       </div>
     </div>
   </section>
 
   <section id="contact" class="contact" aria-labelledby="contact-heading">
     <h2 id="contact-heading">Let's talk</h2>
-    <p>Jenny Puranen, Helsinki, Finland. Languages: Finnish (native), English (C1).</p>
+    <p>Jenny Puranen, Helsinki, Finland</p>
+    <p>Languages: Finnish (native), English (C1)</p>
     <ul class="contact-row plain">
       <li><a class="btn" href="mailto:puranenjenny@gmail.com">puranenjenny@gmail.com</a></li>
+      <li>
+        <button type="button" class="btn ghost copy" data-copy="puranenjenny@gmail.com">
+          Copy email
+        </button>
+        <span class="sr" role="status" data-copy-status></span>
+      </li>
       <li><a class="btn ghost" href="https://www.linkedin.com/in/jenny-puranen/">LinkedIn</a></li>
       <li><a class="btn ghost" href="https://github.com/puranenjenny">GitHub</a></li>
     </ul>
   </section>
 </Base>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-copy]');
+  const status = document.querySelector<HTMLElement>('[data-copy-status]');
+  btn?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(btn.dataset.copy!);
+      btn.textContent = 'Copied!';
+      if (status) status.textContent = 'Email address copied to clipboard';
+    } catch {
+      btn.textContent = 'Press Ctrl+C to copy';
+      if (status) status.textContent = 'Copying failed';
+    }
+    setTimeout(() => (btn.textContent = 'Copy email'), 2500);
+  });
+</script>

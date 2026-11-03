@@ -4,8 +4,8 @@ const steps = [
   ['Script runs', ''],
   ['Feeding time logged', 'to Google Sheets'],
 ];
-const w = 190;
-const gap = 40;
+const w = 150;
+const gap = 30;
 const total = steps.length * w + (steps.length - 1) * gap;
 ---
 
@@ -40,13 +40,12 @@ const total = steps.length * w + (steps.length - 1) * gap;
       </marker>
     </defs>
   </svg>
-  <figcaption>Drawn in code.</figcaption>
-</figure>
+  </figure>
 
 <style>
   .flow {
     margin: 1rem 0 0;
-    max-width: 100%;
+    max-width: 32rem;
   }
   @media (max-width: 40rem) {
     .flow {
@@ -65,7 +64,7 @@ const total = steps.length * w + (steps.length - 1) * gap;
   }
   text {
     fill: var(--fg);
-    font-size: 16px;
+    font-size: 13px;
     font-family: inherit;
   }
   path {
